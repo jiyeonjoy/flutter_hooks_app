@@ -19,21 +19,20 @@ class IncrementCounter {
 }
 
 class UseReducerExample extends HookWidget {
+  const UseReducerExample({super.key});
+
   @override
   Widget build(BuildContext context) {
     // Create the reducer function that will handle the actions you dispatch
-    State _reducer(State state, IncrementCounter action) {
-      if (action is IncrementCounter) {
-        return State(counter: state.counter + action.counter);
-      }
-      return state;
+    State reducer(State state, IncrementCounter action) {
+      return State(counter: state.counter + action.counter);
     }
 
     // Next, invoke the `useReducer` function with the reducer function and initial state to create a
     // `_store` variable that contains the current state and dispatch. Whenever the value is
     // changed, this Widget will be rebuilt!
-    final _store = useReducer<State, IncrementCounter>(
-      _reducer,
+    final store = useReducer<State, IncrementCounter>(
+      reducer,
       initialState: const State(),
       initialAction: IncrementCounter(counter: 0),
     );
@@ -44,13 +43,13 @@ class UseReducerExample extends HookWidget {
       ),
       body: Center(
         // Read the current value from the counter
-        child: Text('Button tapped ${_store.state.counter} times'),
+        child: Text('Button tapped ${store.state.counter} times'),
       ),
       floatingActionButton: FloatingActionButton(
         // When the button is pressed, dispatch the Action you wish to trigger! This
         // will trigger a rebuild, displaying the latest value in the Text
         // Widget above!
-        onPressed: () => _store.dispatch(IncrementCounter(counter: 1)),
+        onPressed: () => store.dispatch(IncrementCounter(counter: 1)),
         child: const Icon(Icons.add),
       ),
     );
